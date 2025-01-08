@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const Pokemon = (props) => {
@@ -23,16 +23,18 @@ const Pokemon = (props) => {
         return filteredArray[0].base_stat;
     }
 
-    //la sintaxis más moderna es async-await
-    axios.get("https://pokeapi.co/api/v2/pokemon/" + ID)
-    .then(response => { 
-        setNombre(response.data.name);
-        setImgFrontUrl(response.data.sprites.front_default);
-        setImgBackUrl(response.data.sprites.back_default);
-        setBaseHP(getStat("hp", response.data.stats));
-        setBaseAttack(getStat("attack", response.data.stats));
-        setBaseDefense(getStat("defense", response.data.stats));
-    })
+    useEffect(() => {
+        //la sintaxis más moderna es async-await
+        axios.get("https://pokeapi.co/api/v2/pokemon/" + ID)
+        .then(response => { 
+            setNombre(response.data.name);
+            setImgFrontUrl(response.data.sprites.front_default);
+            setImgBackUrl(response.data.sprites.back_default);
+            setBaseHP(getStat("hp", response.data.stats));
+            setBaseAttack(getStat("attack", response.data.stats));
+            setBaseDefense(getStat("defense", response.data.stats));
+        })
+    }, []);
 
     const onSubirNivel = (event) => {
         setNivel(n => n + 1);
